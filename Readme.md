@@ -1,55 +1,84 @@
 
 # Rock Paper Scissor Game:
 
-It is a hand game played between two players. Each players simultanously show a
-hand signal rock, scissors or paper.  
+It is a hand game played between two players. Each player simultaneously shows a
+hand signal: one of rock, scissors, or paper.  
 
-Rules followed:
-- Rock crushes Scissors => Rock wins
-- Scissors cuts Paper => Scissors wins
-- Paper wraps Rock => Paper wins
+Typical ruleset: Rock crushes Scissors, Scissors cuts Paper, Paper wraps Rock
 
-Based on the above rules, winner get 1 point. Both player pick the same hand signal,
-then it is tie. Whoever scores maximum points at the end of n rounds is the winner.
+- Based on these rules, winner gets 1 point every round. 
+- In case of tie, no one gets a point.
+- Whoever scores the maximum points at the end of N rounds is the winner.
 
 ## Design Process
 
-Initially, I started of with monolithic structure and functional programming to implement the game
-to understand the different functionality of game. Once, I got the overall picture, I changed to 
-Object oriented design. so, if we want to changes/extend any feature, it can be easily done.
+Initially, to get an idea of the control flow and various functionalities, 
+I started with a non-OOPS monolithic structure to implement the game.
+Soon enough, I identified below entities:
 
-- At first, we implemented the 
+- Game object: Started here where the main control loop would be present. 
+  This object would give control to each player every turn and determine winner
+  and keep count until N rounds are done.
+  - It has the logic to decide winner given the two inputs.
 
+- Classified the possible players into Computer and Human, and added them both 
+  as subclasses to Player class. If we want to later change the logic of 
+  choosing the signal by the computer based on the opponent history, we can 
+  modify the computerPlayer class without affecting other behaviours.
+    - The base class has a static, factory method to return objects of relevant
+      sub-class for given player_type.
 
+- During above implementation, I noticed that if we want to change the rules or
+  extend the rules, maintaining it as a separate class would be better, 
+  and so did the same. Now we could pass a Rules object to the game to play any 
+  variant of the game.
+
+- All other, minor decisions are either self-explanatory or explained with 
+  in-line comments.
 
 ## How to play
-
-Clone the repository
+```shell
+# Clone the repository or download the files
 git clone https://github.com/nandhini-yolo/RockPaperScissors.git
 
-Add the repo to PYTHONPATH
-setenv PYTHONPATH TOP_DIR/src/lib/python:$PYTHONPATH
+# Add the repo to PYTHONPATH
+export PYTHONPATH=<TOP_DIR>/src/lib/python:$PYTHONPATH
 
-Start the game 
-TOP_DIR/src/appl/rock_paper_scissor_game.py 
-
+# Start the game 
+<TOP_DIR>/src/appl/rock_paper_scissor_game.py 
+```
 
 ## Possible extensions
 
-Some of the possible extensions I thought of and considered while designing the system
+Some of the possible extensions I thought of and considered:
 
-1. Instead of just three hand signals, we can easily extend this game to include more hand signals.
-We can support this by extending the RPSRules and HandSignals class and overriding the compare function
+1. Instead of just three hand signals, the game could have more hand signals
+   with their own relations (like RPS-Spock-Lizard). Creating a new Rules by 
+   inheriting RPSRules and overriding the compare function would enable this.
 
-2. Playing the game between two human user. This requires only minor change in 
-rock_paper_scissor_game. The required changes were cleared described in the inline comments
+2. Playing the game between two human users: this can be done by instantiating 
+   the two objects in different threads with their own input collection interface.
 
-3. Two player over the network, This also we can easily set up by launching the game in the server
-and player can connect to the game server, share his chose & communicate with the server over a 
-reliable TCP connection.
+    a. Two player over the network: This also can be set up by launching the 
+       Game object in the server and Player objects can communicate their choice
+       over a TCP connection.
 
-4. Right now, Computer picks the hand signals randomly. Instead, We can persist the choices made by the opponent 
-and its choices as well over history. Then, Computer can analysis the frequency of player choices to maximize the possible wins.
+3. Right now, ComputerPlayer picks the hand signals randomly. Instead, we can 
+   persist the choices made by the opponent and self over time. Then, 
+   Computer can analyse the frequency of player choices to maximize the wins.
 
 
+## Testing notes:
 
+Negative scenarios:
+- Raises an error for invalid input for a hand signals
+- Raises an error for invalid input for user name and number of rounds
+- Game exits for num of rounds is given as zero
+- Doesn't persist the user details or score when the game is killed abruptly
+
+Positive scenarios:
+- Accepts the valid inputs from the user
+- Repeats the round for given N times
+- Decides the winner correctly based on the defined set of rules
+- Correctly the tally the score at the end of each round
+- Correctly track the score of each player and calculates the winner.

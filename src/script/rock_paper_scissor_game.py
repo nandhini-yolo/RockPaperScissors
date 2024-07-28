@@ -1,20 +1,19 @@
 # !/usr/local/bin/python3
 """
-Rock Paper Scissor Game  - Hand Game played between two players. 
-Each players simultanously show a hand signal rock, scissors or paper.  
+It is a hand game played between two players. Each player simultaneously shows a
+hand signal: one of rock, scissors, or paper.  
 
-Rules:
-- Rock crushes Scissors => Rock wins
-- Scissors cuts Paper => Scissors wins
-- Paper wraps Rock => Paper wins
+Typical ruleset: Rock crushes Scissors, Scissors cuts Paper, Paper wraps Rock
 
-Based on the above rules, winner get 1 point. Both player pick the same hand signal,
-then it is tie. Whoever scores maximum points at the end of n round is the winner.
+- Based on these rules, winner gets 1 point every round. 
+- In case of tie, no one gets a point.
+- Whoever scores the maximum points at the end of N rounds is the winner.
 """
 
-from RPS.game import RPSGame
+from RPS.game             import RPSGame
+from RPS.player           import Player
 from RPS.prompt_validator import IntegerValidator, UserNameValidator
-from prompt_toolkit import prompt
+from prompt_toolkit       import prompt
 
 
 if __name__ == "__main__":
@@ -31,8 +30,8 @@ if __name__ == "__main__":
     # For the given question, playerA is a Computer and playerB is a Human.
     # If we want to later change the game to play betweem two human player,
     # we just to need to update these dictionaries.
-    playerA = {"name": "Computer", "type": "computer"}
-    playerB = {"name": player_name, "type": "human"}
+    playerA = Player.create_player("computer", "Computer") 
+    playerB = Player.create_player("human", player_name)
 
     # Instantiate the RPSGame object with player details and number of rounds.
     # By default, the game follows the rules mentioned in the doc string.

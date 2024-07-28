@@ -23,8 +23,8 @@ class RPSGame:
         :param rule_set: Rules class that define how to determine a winner. 
         :type rule_set: Rules class with compare func defined
         """
-        self.playerA = Player.create_player(playerA["type"], playerA["name"])
-        self.playerB = Player.create_player(playerB["type"], playerB["name"])
+        self.playerA = playerA
+        self.playerB = playerB
         self.num_rounds = rounds
         self.rule_set = rule_set
         self.current_round = 1
@@ -39,14 +39,13 @@ class RPSGame:
         :param choiceB: Hand signal chose by player B
         :type choiceB: HandSignals
         """
-        compare_result = self.rule_set.compare(choiceA, choiceB)
-        if compare_result == -1:
-            return self.playerB
-
-        if compare_result == 1:
-            return self.playerA
-
-        return None
+        match self.rule_set.compare(choiceA, choiceB):
+            case -1:
+                return self.playerB
+            case 1:
+                return self.playerA
+            case _:
+                return None
 
     def print_round_result(self, winner):
         """

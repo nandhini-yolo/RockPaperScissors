@@ -46,7 +46,3 @@ class TestPlayer:
         """
         player = Player.create_player("computer", "Computer")
         assert player.choose_signal() in HandSignals
-
-
-
-

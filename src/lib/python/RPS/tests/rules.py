@@ -4,6 +4,7 @@ Unittest for HandSignals Enum and RPSRules class
 from RPS.rules import HandSignals, RPSRules
 import pytest
 
+
 class TestHandSignals:
 
     def test_get_values(self):

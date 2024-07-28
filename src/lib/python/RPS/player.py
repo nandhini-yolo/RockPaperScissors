@@ -5,7 +5,7 @@ import random
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, player_type):
         """
         Initialize a player object
 
@@ -14,6 +14,7 @@ class Player:
         """
         self.name = name
         self._score = 0
+        self.player_type = player_type
 
     @property
     def score(self):
@@ -45,6 +46,11 @@ class Player:
 
 
 class ComputerPlayer(Player):
+    _player_type = 'computer'
+
+    def __init__(self, name):
+        super().__init__(name, self._player_type)
+
     def choose_signal(self):
         """
         Random pick a hand signal from HandSignals enum
@@ -53,6 +59,11 @@ class ComputerPlayer(Player):
 
 
 class HumanPlayer(Player):
+    _player_type = 'human'
+
+    def __init__(self, name):
+        super().__init__(name, self._player_type)
+
     def choose_signal(self):
         """
         Get the hand signal from the player

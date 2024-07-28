@@ -13,11 +13,13 @@ class HandSignals(Enum):
     def keys(cls):
         return [member.name for member in cls]
 
+
 class Rules:
 
     @staticmethod
     def compare(choiceA, choiceB):
-        raise NotImplementedError("This is implemented in the subclasses")
+        raise NotImplementedError("This must be implemented in the subclasses")
+
 
 class RPSRules(Rules):
     """
