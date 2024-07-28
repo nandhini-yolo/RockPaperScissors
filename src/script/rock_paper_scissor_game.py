@@ -1,4 +1,4 @@
-# !/usr/local/bin/python3
+#!/usr/local/bin/python3
 """
 It is a hand game played between two players. Each player simultaneously shows a
 hand signal: one of rock, scissors, or paper.  
